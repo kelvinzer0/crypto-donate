@@ -269,7 +269,7 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
         <h3><i class="fas fa-code"></i> Embed Badge</h3>
         <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Add to your README:</p>
         <div class="addr" style="font-size:11px;word-break:break-all;white-space:normal;padding:8px">
-          ![${title}](https://your-domain.com/${base64}/badge)
+          [![${title}](https://your-domain.com/${base64}/badge)](https://your-domain.com/${base64})
         </div>
       </div>
     </div>
