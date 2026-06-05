@@ -275,10 +275,6 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
     </div>
   </div>
 
-  <div class="badge-section">
-    <img src="/${base64}/badge" alt="Donation progress badge"/>
-  </div>
-
   <div class="footer">
     <p><a href="/">Crypto Donate</a> — Open source, no fees, no middleman. Donations go directly to wallet addresses.</p>
   </div>
