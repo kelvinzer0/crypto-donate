@@ -28,9 +28,13 @@ export function renderBadge(data: DonateData, balances: Record<string, number>, 
   const height = 64
 
   const iconSize = 14
-  const iconX = width - 16 - iconSize
+  const valueText = `${formatNumber(total)}/${formatNumber(data.target)}`
+  // Estimate text width (~7.2px per char at font-size 13)
+  const textWidthEst = valueText.length * 7.2
+  const groupWidth = iconSize + 4 + textWidthEst
+  const iconX = width - 16 - groupWidth
   const iconY = 22 - iconSize + 2
-  const textEndX = iconX - 4
+  const textX = iconX + iconSize + 4
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
 <defs>
@@ -41,8 +45,8 @@ export function renderBadge(data: DonateData, balances: Record<string, number>, 
 </defs>
 <rect width="${width}" height="${height}" rx="4" fill="${bg}" stroke="${border}" stroke-width="1"/>
 <text x="16" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="${textColor}">${escapeXml(title)}</text>
-<text x="${textEndX}" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#cb3837" text-anchor="end">${formatNumber(total)}/${formatNumber(data.target)}</text>
 ${usdcIconSVG(iconX, iconY, iconSize)}
+<text x="${textX}" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#cb3837">${valueText}</text>
 <rect x="16" y="34" width="${width - 32}" height="6" rx="3" fill="${barBg}"/>
 <rect x="16" y="34" width="${(width - 32) * filled}" height="6" rx="3" fill="url(#npmGrad)"/>
 <text x="16" y="54" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="11" fill="${mutedColor}">${pct.toFixed(1)}% funded · ${Object.keys(data.addresses).filter(k=>CHAINS[k]).length} chains</text>
