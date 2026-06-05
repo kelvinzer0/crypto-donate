@@ -138,6 +138,18 @@ a:hover{text-decoration:underline}
 }
 .footer a{color:var(--accent)}
 
+/* ─── Sidebar ─── */
+.sidebar-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+  margin-bottom:16px;
+}
+.sidebar-card h3{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--text)}
+.stat-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{color:var(--text-secondary)}
+.stat-value{font-weight:600}
+
 /* ─── Responsive ─── */
 @media(max-width:640px){
   .container{padding:16px}
@@ -147,22 +159,13 @@ a:hover{text-decoration:underline}
   .progress-raised{font-size:22px}
   .addr{font-size:11px;padding:6px 8px}
   .chain-card{padding:16px}
+  .sidebar{margin-top:24px}
 }
 
-/* ─── npm-style sidebar layout for desktop ─── */
+/* ─── Desktop sidebar layout ─── */
 @media(min-width:768px){
   .content-grid{display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
   .sidebar{position:sticky;top:72px}
-  .sidebar-card{
-    background:var(--bg);border:1px solid var(--border);
-    border-radius:var(--radius);padding:20px;
-    margin-bottom:16px;
-  }
-  .sidebar-card h3{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--text)}
-  .stat-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px solid var(--border)}
-  .stat-row:last-child{border-bottom:none}
-  .stat-label{color:var(--text-secondary)}
-  .stat-value{font-weight:600}
 }
 `
 
