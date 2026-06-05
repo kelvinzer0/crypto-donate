@@ -41,7 +41,7 @@ export function renderBadge(data: DonateData, balances: Record<string, number>, 
 </defs>
 <rect width="${width}" height="${height}" rx="4" fill="${bg}" stroke="${border}" stroke-width="1"/>
 <text x="16" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="${textColor}">${escapeXml(title)}</text>
-<text x="${textEndX}" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#cb3837" text-anchor="end">${formatNumber(total)}/${formatNumber(data.target)} USDC</text>
+<text x="${textEndX}" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#cb3837" text-anchor="end">${formatNumber(total)}/${formatNumber(data.target)}</text>
 ${usdcIconSVG(iconX, iconY, iconSize)}
 <rect x="16" y="34" width="${width - 32}" height="6" rx="3" fill="${barBg}"/>
 <rect x="16" y="34" width="${(width - 32) * filled}" height="6" rx="3" fill="url(#npmGrad)"/>
