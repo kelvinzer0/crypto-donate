@@ -12,6 +12,8 @@ type Bindings = {
 const EVM_RE = /^0x[0-9a-fA-F]{40}$/
 const SOL_RE = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/
 const TRX_RE = /^T[a-zA-Z0-9]{33}$/
+const TON_RE = /^(EQ|UQ|EQA|UQA)[A-Za-z0-9_-]{40,50}$/
+const DOT_RE = /^[1-9A-HJ-NP-Za-km-z]{47,48}$/
 
 function validateAddresses(addresses: Record<string, string>): Record<string, string> {
   const clean: Record<string, string> = {}
@@ -19,6 +21,8 @@ function validateAddresses(addresses: Record<string, string>): Record<string, st
     if (!CHAINS[chain]) continue
     if (chain === "solana") { if (SOL_RE.test(addr)) clean[chain] = addr; continue }
     if (chain === "tron") { if (TRX_RE.test(addr)) clean[chain] = addr; continue }
+    if (chain === "ton") { if (TON_RE.test(addr)) clean[chain] = addr; continue }
+    if (chain === "polkadot") { if (DOT_RE.test(addr)) clean[chain] = addr; continue }
     if (EVM_RE.test(addr)) clean[chain] = addr
   }
   return clean

@@ -460,6 +460,8 @@ function validateAddr(chain,addr){
   if(!chain||!addr)return{ok:false,msg:"Required"};
   if(chain==="solana"){if(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr))return{ok:true};return{ok:false,msg:"Invalid Solana address (base58, 32-44 chars)"};}
   if(chain==="tron"){if(/^T[a-zA-Z0-9]{33}$/.test(addr))return{ok:true};return{ok:false,msg:"Invalid Tron address (starts with T, 34 chars)"};}
+  if(chain==="ton"){if(/^(EQ|UQ|EQA|UQA)[A-Za-z0-9_-]{40,50}$/.test(addr))return{ok:true};return{ok:false,msg:"Invalid TON address (EQ/UQ + 40-50 chars)"};}
+  if(chain==="polkadot"){if(/^[1-9A-HJ-NP-Za-km-z]{47,48}$/.test(addr))return{ok:true};return{ok:false,msg:"Invalid Polkadot address (SS58, 47-48 chars)"};}
   if(EVM_CHAINS.has(chain)){if(/^0x[0-9a-fA-F]{40}$/.test(addr))return{ok:true};return{ok:false,msg:"Invalid EVM address (0x + 40 hex chars)"};}
   return{ok:true};
 }
