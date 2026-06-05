@@ -1,10 +1,26 @@
-// Chain configurations for USDC with RPC rotation
+// Chain configurations for USDC with viem for EVM chains
+
+import { createPublicClient, http, fallback, formatUnits, type Chain } from "viem"
+import { mainnet, polygon, arbitrum, optimism, bsc, avalanche } from "viem/chains"
+
+// Custom Base chain (not always in viem/chains)
+const base: Chain = {
+  id: 8453,
+  name: "Base",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://mainnet.base.org"] },
+  },
+  blockExplorers: {
+    default: { name: "BaseScan", url: "https://basescan.org" },
+  },
+}
 
 export interface ChainConfig {
   name: string
   symbol: string
   usdc: string
-  rpcs: string[]        // Multiple RPCs for rotation
+  rpcs: string[]
   explorer: string
   color: string
   faIcon: string
@@ -12,6 +28,7 @@ export interface ChainConfig {
   decimals: number
   native: boolean
   type: "evm" | "solana" | "tron" | "ton" | "polkadot"
+  viemChain?: Chain
 }
 
 export const CHAINS: Record<string, ChainConfig> = {
@@ -33,6 +50,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: mainnet,
   },
   polygon: {
     name: "Polygon",
@@ -52,6 +70,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: polygon,
   },
   arbitrum: {
     name: "Arbitrum",
@@ -70,6 +89,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: arbitrum,
   },
   optimism: {
     name: "Optimism",
@@ -88,6 +108,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: optimism,
   },
   base: {
     name: "Base",
@@ -106,6 +127,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: base,
   },
   bsc: {
     name: "BNB Chain",
@@ -125,6 +147,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 18,
     native: false,
     type: "evm",
+    viemChain: bsc,
   },
   avalanche: {
     name: "Avalanche",
@@ -143,6 +166,7 @@ export const CHAINS: Record<string, ChainConfig> = {
     decimals: 6,
     native: false,
     type: "evm",
+    viemChain: avalanche,
   },
   solana: {
     name: "Solana",
@@ -196,7 +220,7 @@ export const CHAINS: Record<string, ChainConfig> = {
   polkadot: {
     name: "Polkadot",
     symbol: "DOT",
-    usdc: "1337",  // Asset Hub asset ID for USDC
+    usdc: "1337",
     rpcs: [
       "https://polkadot.api.subscan.io",
       "https://assethub-polkadot.api.subscan.io",
@@ -235,22 +259,34 @@ export function decodeData(b64: string): DonateData | null {
   }
 }
 
-// ─── RPC Rotation Helper ───
+// ─── ERC20 ABI (balanceOf only) ───
+const erc20Abi = [
+  {
+    name: "balanceOf",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+] as const
 
-async function fetchWithRotation(rpcs: string[], init: RequestInit, timeoutMs = 8000): Promise<Response> {
-  let lastErr: Error | null = null
-  for (const rpc of rpcs) {
-    try {
-      const controller = new AbortController()
-      const timer = setTimeout(() => controller.abort(), timeoutMs)
-      const resp = await fetch(rpc, { ...init, signal: controller.signal })
-      clearTimeout(timer)
-      if (resp.ok) return resp
-    } catch (e) {
-      lastErr = e as Error
-    }
-  }
-  throw lastErr || new Error("All RPCs failed")
+// ─── EVM Client Cache ───
+const clientCache = new Map<string, ReturnType<typeof createPublicClient>>()
+
+function getEVMClient(chainKey: string, cfg: ChainConfig) {
+  const cached = clientCache.get(chainKey)
+  if (cached) return cached
+
+  if (!cfg.viemChain) return null
+
+  const transports = cfg.rpcs.map((rpc) => http(rpc, { timeout: 8000 }))
+  const client = createPublicClient({
+    chain: cfg.viemChain,
+    transport: fallback(transports),
+  })
+
+  clientCache.set(chainKey, client)
+  return client
 }
 
 // ─── Balance Checkers ───
@@ -261,7 +297,7 @@ export async function getUSDCBalance(chain: string, address: string): Promise<nu
 
   try {
     switch (cfg.type) {
-      case "evm": return await getEVMUSDCBalance(cfg, address)
+      case "evm": return await getEVMUSDCBalance(chain, cfg, address)
       case "solana": return await getSolanaUSDCBalance(cfg, address)
       case "tron": return await getTronUSDCBalance(cfg, address)
       case "ton": return await getTonUSDCBalance(cfg, address)
@@ -273,19 +309,18 @@ export async function getUSDCBalance(chain: string, address: string): Promise<nu
   }
 }
 
-async function getEVMUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
-  const data = "0x70a08231" + address.slice(2).padStart(64, "0")
-  const resp = await fetchWithRotation(cfg.rpcs, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      jsonrpc: "2.0", id: 1, method: "eth_call",
-      params: [{ to: cfg.usdc, data }, "latest"],
-    }),
+async function getEVMUSDCBalance(chainKey: string, cfg: ChainConfig, address: string): Promise<number> {
+  const client = getEVMClient(chainKey, cfg)
+  if (!client) return 0
+
+  const balance = await client.readContract({
+    address: cfg.usdc as `0x${string}`,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: [address as `0x${string}`],
   })
-  const json: any = await resp.json()
-  if (!json.result || json.result === "0x") return 0
-  return Number(BigInt(json.result)) / 10 ** cfg.decimals
+
+  return Number(formatUnits(balance, cfg.decimals))
 }
 
 async function getSolanaUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
@@ -307,20 +342,24 @@ async function getSolanaUSDCBalance(cfg: ChainConfig, address: string): Promise<
   return total
 }
 
+async function fetchWithRotation(rpcs: string[], init: RequestInit, timeoutMs = 8000): Promise<Response> {
+  let lastErr: Error | null = null
+  for (const rpc of rpcs) {
+    try {
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), timeoutMs)
+      const resp = await fetch(rpc, { ...init, signal: controller.signal })
+      clearTimeout(timer)
+      if (resp.ok) return resp
+    } catch (e) {
+      lastErr = e as Error
+    }
+  }
+  throw lastErr || new Error("All RPCs failed")
+}
+
 async function getTronUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
   try {
-    const resp = await fetchWithRotation(cfg.rpcs, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        owner_address: address,
-        contract_address: cfg.usdc,
-        function_selector: "balanceOf(address)",
-        parameter: address.padStart(64, "0"),
-        visible: true,
-      }),
-    }, 5000)
-    // Tron uses triggerconstantcontract on trongrid
     const url = cfg.rpcs[0] + "/wallet/triggerconstantcontract"
     const r = await fetch(url, {
       method: "POST",
@@ -342,7 +381,6 @@ async function getTronUSDCBalance(cfg: ChainConfig, address: string): Promise<nu
 }
 
 async function getTonUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
-  // Use tonapi.io to get jetton (USDC) balance
   try {
     const resp = await fetch(
       `https://tonapi.io/v2/accounts/${address}/jettons?currencies=usd`,
@@ -362,7 +400,6 @@ async function getTonUSDCBalance(cfg: ChainConfig, address: string): Promise<num
 }
 
 async function getPolkadotUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
-  // Use Subscan API to check USDC balance on Asset Hub
   try {
     const resp = await fetch("https://assethub-polkadot.api.subscan.io/api/v2/scan/account/assets", {
       method: "POST",
@@ -370,9 +407,7 @@ async function getPolkadotUSDCBalance(cfg: ChainConfig, address: string): Promis
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: JSON.stringify({
-        address: address,
-      }),
+      body: JSON.stringify({ address }),
     })
     const j: any = await resp.json()
     const assets = j.data?.assets || []

@@ -7,10 +7,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4"
+    "hono": "^4",
+    "viem": "^2.52.2"
   },
   "devDependencies": {
-    "wrangler": "^3",
-    "@cloudflare/workers-types": "^4"
+    "@cloudflare/workers-types": "^4",
+    "typescript": "^6.0.3",
+    "wrangler": "^3"
   }
 }
