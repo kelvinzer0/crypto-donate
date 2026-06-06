@@ -17,77 +17,94 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate static frontend
-        run: |
-          cat > index.html << 'HTMLEOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-          <meta charset="utf-8"/>
-          <meta name="viewport" content="width=device-width,initial-scale=1"/>
-          <title>Crypto Donate — Create Membership Moral Page</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com"/>
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-          <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet"/>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-          <style>
-          *{margin:0;padding:0;box-sizing:border-box}:root{--bg:#fff;--bg-secondary:#fff5d8;--border:#f2f2f2;--text:#000;--text-secondary:#666;--accent:#cb3837;--secondary:#886701;--btn-bg:#231f20;--btn-text:#fff;--shadow-mid:rgba(0,0,0,.12) 0 2px 7px 0;--shadow-high:rgba(0,0,0,.1) 0 4px 13px -3px;--radius:4px;--radius-btn:8px}html{font-size:16px}body{font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.nav{background:var(--btn-bg);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}.nav-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:18px;text-decoration:none}.nav-brand:hover{text-decoration:none;color:#fff}.nav-links{display:flex;gap:24px;align-items:center}.nav-links a{color:rgba(255,255,255,.85);font-size:14px}.nav-links a:hover{color:#fff;text-decoration:none}.container{max-width:1024px;margin:0 auto;padding:32px 24px}.hero{text-align:center;padding:48px 0 32px}.hero h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px;letter-spacing:-.02em}.hero p{font-size:17px;color:var(--text-secondary);max-width:520px;margin:0 auto}.form-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-mid);max-width:640px;margin:0 auto}.field{margin-bottom:20px}.field label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:inherit;font-size:15px;transition:border-color .15s}.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--accent)}.field textarea{resize:vertical;min-height:64px}.field .hint{font-size:13px;color:var(--text-secondary);margin-top:4px}.chain-addr{display:grid;grid-template-columns:130px 1fr auto;gap:8px;align-items:start;margin-bottom:8px}.chain-addr select{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 8px;color:var(--text);font-family:inherit;font-size:14px}.chain-addr input{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px}.chain-addr input:focus{outline:none;border-color:var(--accent)}.chain-addr button{background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:var(--radius);padding:10px;cursor:pointer;font-size:14px;transition:all .15s}.chain-addr button:hover{border-color:var(--accent);color:var(--accent)}.row-err{color:var(--accent);font-size:12px;margin-top:2px;grid-column:1/-1}.add-chain-btn{width:100%;background:var(--bg);border:1px dashed var(--border);color:var(--text-secondary);border-radius:var(--radius);padding:10px;cursor:pointer;font-family:inherit;font-size:14px;margin-bottom:24px;transition:all .15s}.add-chain-btn:hover{border-color:var(--accent);color:var(--accent)}.gen-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-btn);padding:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .15s}.gen-btn:hover{opacity:.85}.result-card{display:none;margin-top:24px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:20px}.result-card.show{display:block}.result-card label{font-size:13px;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px}.result-url{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--accent);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px;word-break:break-all}.result-actions{display:flex;gap:8px;margin-top:12px}.result-actions .btn{flex:1;justify-content:center}.btn{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:14px;font-weight:700;border:none;cursor:pointer;border-radius:var(--radius-btn);padding:8px 20px;transition:all .15s}.btn-primary{background:var(--btn-bg);color:var(--btn-text)}.btn-primary:hover{opacity:.85}.btn-outline{background:var(--bg);color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;max-width:640px;margin-left:auto;margin-right:auto}.feature{text-align:center;padding:20px 12px;border:1px solid var(--border);border-radius:var(--radius)}.feature-icon{font-size:24px;margin-bottom:8px}.feature h3{font-size:14px;font-weight:700;margin-bottom:4px}.feature p{font-size:13px;color:var(--text-secondary)}.footer{text-align:center;padding:32px 0;margin-top:48px;border-top:1px solid var(--border);color:var(--text-secondary);font-size:13px}.footer a{color:var(--accent)}@media(max-width:640px){.container{padding:16px}.hero h1{font-size:24px}.hero p{font-size:15px}.chain-addr{grid-template-columns:1fr;gap:4px}.features{grid-template-columns:1fr}.form-card{padding:20px}}
-          </style>
-          </head>
-          <body>
-          <nav class="nav">
-            <a href="/" class="nav-brand"><i class="fas fa-cube"></i> Crypto Donate</a>
-            <div class="nav-links">
-              <a href="/">Create</a>
-              <a href="https://github.com/kelvinzer0/crypto-donate" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </nav>
-          <div class="container">
-            <div class="hero">
-              <h1>Create a Membership Moral Page</h1>
-              <p>Multi-chain USDC membership. No fees, no middleman — direct moral support with on-chain transparency.</p>
-            </div>
-            <div class="form-card">
-              <div class="field"><label>Title</label><input id="title" placeholder="e.g. Help Build My Project" maxlength="120"/></div>
-              <div class="field"><label>Description</label><textarea id="desc" placeholder="A short message about your fundraising goal" maxlength="300"></textarea></div>
-              <div class="field"><label>Target Amount (USDC)</label><input id="target" type="number" min="1" placeholder="1000" value="1000"/><div class="hint">The goal amount for your membership</div></div>
-              <div class="field"><label>Discord Invite Link</label><input id="discord" placeholder="https://discord.gg/your-invite"/><div class="hint">Members will be directed here to claim their Contributor role</div></div>
-              <div class="field"><label>Wallet Addresses</label><div id="addresses"></div><button class="add-chain-btn" onclick="addRow()">+ Add Another Chain</button></div>
-              <button class="gen-btn" onclick="generate()">Generate Membership Link →</button>
-              <div id="result" class="result-card">
-                <label>Your membership link</label>
-                <div class="result-url" id="resultUrl"></div>
-                <div class="result-actions">
-                  <button class="btn btn-primary" onclick="copyGenLink(this)"><i class="fas fa-link"></i> Copy Link</button>
-                  <button class="btn btn-outline" onclick="window.open(document.getElementById('resultUrl').textContent,'_blank')"><i class="fas fa-arrow-up-right-from-square"></i> Open</button>
-                </div>
-                <div style="text-align:center;margin-top:12px"><img id="badgePreview" style="height:28px" alt="badge preview"/></div>
-              </div>
-            </div>
-            <div class="features">
-              <div class="feature"><div class="feature-icon"><i class="fas fa-link" style="color:var(--accent)"></i></div><h3>9+ Chains</h3><p>Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Solana, Tron, TON, Polkadot</p></div>
-              <div class="feature"><div class="feature-icon"><i class="fas fa-chart-line" style="color:var(--accent)"></i></div><h3>Live Tracking</h3><p>Real-time on-chain USDC balance via public RPCs</p></div>
-              <div class="feature"><div class="feature-icon"><i class="fab fa-discord" style="color:var(--accent)"></i></div><h3>Discord Roles</h3><p>Members claim Contributor role automatically</p></div>
-            </div>
-            <div class="footer"><p><a href="https://github.com/kelvinzer0/crypto-donate">Crypto Donate</a> — Open source, no fees, no middleman</p></div>
-          </div>
-          <script>
-          var CHAINS=[{id:"ethereum",name:"Ethereum"},{id:"polygon",name:"Polygon"},{id:"arbitrum",name:"Arbitrum"},{id:"optimism",name:"Optimism"},{id:"base",name:"Base"},{id:"bsc",name:"BNB Chain"},{id:"avalanche",name:"Avalanche"},{id:"solana",name:"Solana"},{id:"tron",name:"Tron"},{id:"ton",name:"TON"},{id:"polkadot",name:"Polkadot"}];
-          var EVM=new Set(["ethereum","polygon","arbitrum","optimism","base","bsc","avalanche"]);
-          function validateAddr(c,a){if(!c||!a)return{ok:false,msg:"Required"};if(c==="solana")return/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Solana address"};if(c==="tron")return/^T[a-zA-Z0-9]{33}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Tron address"};if(c==="ton")return/^(EQ|UQ|EQA|UQA)[A-Za-z0-9_-]{40,50}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid TON address"};if(c==="polkadot")return/^[1-9A-HJ-NP-Za-km-z]{47,48}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Polkadot address"};if(EVM.has(c))return/^0x[0-9a-fA-F]{40}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid EVM address (0x + 40 hex)"};return{ok:true}}
-          var rowIdx=0;
-          function addRow(addr){var d=document.createElement("div");d.className="chain-addr";d.id="row"+rowIdx;d.innerHTML='<select onchange="vr(this.parentElement)"><option value="">Select chain</option>'+CHAINS.map(function(c){return'<option value="'+c.id+'">'+c.name+'</option>'}).join("")+'</select><input placeholder="Wallet address" value="'+(addr||'')+'" oninput="vr(this.parentElement)"/><button onclick="this.parentElement.remove()"><i class="fas fa-xmark"></i></button><div class="row-err" style="display:none"></div>';document.getElementById("addresses").appendChild(d);rowIdx++}
-          function vr(r){var c=r.querySelector("select").value,a=r.querySelector("input").value.trim(),e=r.querySelector(".row-err"),i=r.querySelector("input");if(!c&&!a){e.style.display="none";i.style.borderColor="var(--border)";return true}var v=validateAddr(c,a);if(!v.ok&&a){e.textContent="\u26A0 "+v.msg;e.style.display="block";i.style.borderColor="var(--accent)";return false}e.style.display="none";i.style.borderColor=v.ok&&a?"#00b894":"var(--border)";return v.ok}
-          addRow();
-          function copyGenLink(btn){navigator.clipboard.writeText(document.getElementById("resultUrl").textContent).then(function(){btn.innerHTML='<i class="fas fa-check"></i> Copied!';setTimeout(function(){btn.innerHTML='<i class="fas fa-link"></i> Copy Link'},1500)})}
-          var WORKER="__WORKER_URL__";
-          function generate(){var t=document.getElementById("title").value.trim(),d=document.getElementById("desc").value.trim(),tg=parseFloat(document.getElementById("target").value)||1000,rs=document.querySelectorAll(".chain-addr"),addr={},err=false;rs.forEach(function(r){var c=r.querySelector("select").value,a=r.querySelector("input").value.trim(),e=r.querySelector(".row-err");if(c&&!a){err=true;e.textContent="\u26A0 Required";e.style.display="block";r.querySelector("input").style.borderColor="var(--accent)";return}if(c&&a){var v=validateAddr(c,a);if(!v.ok){err=true;e.textContent="\u26A0 "+v.msg;e.style.display="block";r.querySelector("input").style.borderColor="var(--accent)";return}if(addr[c]){err=true;e.textContent="\u26A0 Duplicate: "+c;e.style.display="block;return}addr[c]=a}});if(err)return;if(!Object.keys(addr).length){alert("Add at least one chain");return}var disc=document.getElementById("discord").value.trim();var data={title:t,desc:d,target:tg,addresses:addr,discord:disc||undefined};var b64=btoa(JSON.stringify(data)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");var url=WORKER+"/"+b64;document.getElementById("resultUrl").textContent=url;document.getElementById("result").classList.add("show");document.getElementById("badgePreview").src=url+"/badge"}
-          </script>
-          </body>
-          </html>
-          HTMLEOF
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const workerUrl = '${{ inputs.worker_url }}';
 
-          # Replace worker URL placeholder
-          sed -i "s|__WORKER_URL__|${{ inputs.worker_url }}|g" index.html
+            fs.mkdirSync('membership', { recursive: true });
+
+            const html = `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width,initial-scale=1"/>
+            <title>Crypto Donate — Create Membership Moral Page</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+            <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+            <style>
+            *{margin:0;padding:0;box-sizing:border-box}:root{--bg:#fff;--bg-secondary:#fff5d8;--border:#f2f2f2;--text:#000;--text-secondary:#666;--accent:#cb3837;--secondary:#886701;--btn-bg:#231f20;--btn-text:#fff;--shadow-mid:rgba(0,0,0,.12) 0 2px 7px 0;--shadow-high:rgba(0,0,0,.1) 0 4px 13px -3px;--radius:4px;--radius-btn:8px}html{font-size:16px}body{font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.nav{background:var(--btn-bg);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}.nav-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:18px;text-decoration:none}.nav-brand:hover{text-decoration:none;color:#fff}.nav-links{display:flex;gap:24px;align-items:center}.nav-links a{color:rgba(255,255,255,.85);font-size:14px}.nav-links a:hover{color:#fff;text-decoration:none}.container{max-width:1024px;margin:0 auto;padding:32px 24px}.hero{text-align:center;padding:48px 0 32px}.hero h1{font-size:32px;font-weight:700;line-height:1.15;margin-bottom:8px;letter-spacing:-.02em}.hero p{font-size:17px;color:var(--text-secondary);max-width:520px;margin:0 auto}.form-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-mid);max-width:640px;margin:0 auto}.field{margin-bottom:20px}.field label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:inherit;font-size:15px;transition:border-color .15s}.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--accent)}.field textarea{resize:vertical;min-height:64px}.field .hint{font-size:13px;color:var(--text-secondary);margin-top:4px}.chain-addr{display:grid;grid-template-columns:130px 1fr auto;gap:8px;align-items:start;margin-bottom:8px}.chain-addr select{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 8px;color:var(--text);font-family:inherit;font-size:14px}.chain-addr input{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px}.chain-addr input:focus{outline:none;border-color:var(--accent)}.chain-addr button{background:none;border:1px solid var(--border);color:var(--text-secondary);border-radius:var(--radius);padding:10px;cursor:pointer;font-size:14px;transition:all .15s}.chain-addr button:hover{border-color:var(--accent);color:var(--accent)}.row-err{color:var(--accent);font-size:12px;margin-top:2px;grid-column:1/-1}.add-chain-btn{width:100%;background:var(--bg);border:1px dashed var(--border);color:var(--text-secondary);border-radius:var(--radius);padding:10px;cursor:pointer;font-family:inherit;font-size:14px;margin-bottom:24px;transition:all .15s}.add-chain-btn:hover{border-color:var(--accent);color:var(--accent)}.gen-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-btn);padding:12px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .15s}.gen-btn:hover{opacity:.85}.result-card{display:none;margin-top:24px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);padding:20px}.result-card.show{display:block}.result-card label{font-size:13px;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:6px}.result-url{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--accent);font-family:'SF Mono',Monaco,Consolas,'Courier New',monospace;font-size:13px;word-break:break-all}.result-actions{display:flex;gap:8px;margin-top:12px}.result-actions .btn{flex:1;justify-content:center}.btn{display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-size:14px;font-weight:700;border:none;cursor:pointer;border-radius:var(--radius-btn);padding:8px 20px;transition:all .15s}.btn-primary{background:var(--btn-bg);color:var(--btn-text)}.btn-primary:hover{opacity:.85}.btn-outline{background:var(--bg);color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;max-width:640px;margin-left:auto;margin-right:auto}.feature{text-align:center;padding:20px 12px;border:1px solid var(--border);border-radius:var(--radius)}.feature-icon{font-size:24px;margin-bottom:8px}.feature h3{font-size:14px;font-weight:700;margin-bottom:4px}.feature p{font-size:13px;color:var(--text-secondary)}.footer{text-align:center;padding:32px 0;margin-top:48px;border-top:1px solid var(--border);color:var(--text-secondary);font-size:13px}.footer a{color:var(--accent)}@media(max-width:640px){.container{padding:16px}.hero h1{font-size:24px}.hero p{font-size:15px}.chain-addr{grid-template-columns:1fr;gap:4px}.features{grid-template-columns:1fr}.form-card{padding:20px}}
+            </style>
+            </head>
+            <body>
+            <nav class="nav">
+              <a href="/" class="nav-brand"><i class="fas fa-cube"></i> Crypto Donate</a>
+              <div class="nav-links">
+                <a href="/membership">Create</a>
+                <a href="https://github.com/kelvinzer0/crypto-donate" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+              </div>
+            </nav>
+            <div class="container">
+              <div class="hero">
+                <h1>Create a Membership Moral Page</h1>
+                <p>Multi-chain USDC membership. No fees, no middleman &mdash; direct moral support with on-chain transparency.</p>
+              </div>
+              <div class="form-card">
+                <div class="field"><label>Title</label><input id="title" placeholder="e.g. Help Build My Project" maxlength="120"/></div>
+                <div class="field"><label>Description</label><textarea id="desc" placeholder="A short message about your fundraising goal" maxlength="300"></textarea></div>
+                <div class="field"><label>Target Amount (USDC)</label><input id="target" type="number" min="1" placeholder="1000" value="1000"/><div class="hint">The goal amount for your membership</div></div>
+                <div class="field"><label>Discord Invite Link</label><input id="discord" placeholder="https://discord.gg/your-invite"/><div class="hint">Members will be directed here to claim their Contributor role</div></div>
+                <div class="field"><label>Wallet Addresses</label><div id="addresses"></div><button class="add-chain-btn" id="addBtn">+ Add Another Chain</button></div>
+                <button class="gen-btn" id="genBtn">Generate Membership Link &rarr;</button>
+                <div id="result" class="result-card">
+                  <label>Your membership link</label>
+                  <div class="result-url" id="resultUrl"></div>
+                  <div class="result-actions">
+                    <button class="btn btn-primary" id="copyBtn"><i class="fas fa-link"></i> Copy Link</button>
+                    <button class="btn btn-outline" id="openBtn"><i class="fas fa-arrow-up-right-from-square"></i> Open</button>
+                  </div>
+                  <div style="text-align:center;margin-top:12px"><img id="badgePreview" style="height:28px" alt="badge preview"/></div>
+                </div>
+              </div>
+              <div class="features">
+                <div class="feature"><div class="feature-icon"><i class="fas fa-link" style="color:var(--accent)"></i></div><h3>9+ Chains</h3><p>Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Solana, Tron, TON, Polkadot</p></div>
+                <div class="feature"><div class="feature-icon"><i class="fas fa-chart-line" style="color:var(--accent)"></i></div><h3>Live Tracking</h3><p>Real-time on-chain USDC balance via public RPCs</p></div>
+                <div class="feature"><div class="feature-icon"><i class="fab fa-discord" style="color:var(--accent)"></i></div><h3>Discord Roles</h3><p>Members claim Contributor role automatically</p></div>
+              </div>
+              <div class="footer"><p><a href="https://github.com/kelvinzer0/crypto-donate">Crypto Donate</a> &mdash; Open source, no fees, no middleman</p></div>
+            </div>
+            <script>
+            (function(){
+              var CHAINS=[{id:"ethereum",name:"Ethereum"},{id:"polygon",name:"Polygon"},{id:"arbitrum",name:"Arbitrum"},{id:"optimism",name:"Optimism"},{id:"base",name:"Base"},{id:"bsc",name:"BNB Chain"},{id:"avalanche",name:"Avalanche"},{id:"solana",name:"Solana"},{id:"tron",name:"Tron"},{id:"ton",name:"TON"},{id:"polkadot",name:"Polkadot"}];
+              var EVM=new Set(["ethereum","polygon","arbitrum","optimism","base","bsc","avalanche"]);
+              var WORKER="${workerUrl}";
+              var rowIdx=0;
+              function validateAddr(c,a){if(!c||!a)return{ok:false,msg:"Required"};if(c==="solana")return/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Solana address"};if(c==="tron")return/^T[a-zA-Z0-9]{33}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Tron address"};if(c==="ton")return/^(EQ|UQ|EQA|UQA)[A-Za-z0-9_-]{40,50}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid TON address"};if(c==="polkadot")return/^[1-9A-HJ-NP-Za-km-z]{47,48}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid Polkadot address"};if(EVM.has(c))return/^0x[0-9a-fA-F]{40}$/.test(a)?{ok:true}:{ok:false,msg:"Invalid EVM address (0x + 40 hex)"};return{ok:true}}
+              function validateRow(row){var chain=row.querySelector("select").value,addr=row.querySelector("input").value.trim(),errDiv=row.querySelector(".row-err"),input=row.querySelector("input");if(!chain&&!addr){errDiv.style.display="none";input.style.borderColor="var(--border)";return true}var v=validateAddr(chain,addr);if(!v.ok&&addr){errDiv.textContent="\\u26A0 "+v.msg;errDiv.style.display="block";input.style.borderColor="var(--accent)";return false}errDiv.style.display="none";input.style.borderColor=v.ok&&addr?"#00b894":"var(--border)";return v.ok}
+              function addRow(addr){var d=document.createElement("div");d.className="chain-addr";d.id="row"+rowIdx;var opts='<option value="">Select chain</option>';for(var i=0;i<CHAINS.length;i++){opts+='<option value="'+CHAINS[i].id+'">'+CHAINS[i].name+'</option>'}d.innerHTML='<select>'+opts+'</select><input placeholder="Wallet address" value="'+(addr||'')+'"/><button><i class="fas fa-xmark"></i></button><div class="row-err" style="display:none"></div>';d.querySelector("select").addEventListener("change",function(){validateRow(d)});d.querySelector("input").addEventListener("input",function(){validateRow(d)});d.querySelector("button").addEventListener("click",function(){d.remove()});document.getElementById("addresses").appendChild(d);rowIdx++}
+              function copyGenLink(btn){navigator.clipboard.writeText(document.getElementById("resultUrl").textContent).then(function(){btn.innerHTML='<i class="fas fa-check"></i> Copied!';setTimeout(function(){btn.innerHTML='<i class="fas fa-link"></i> Copy Link'},1500)})}
+              function generate(){var title=document.getElementById("title").value.trim(),desc=document.getElementById("desc").value.trim(),target=parseFloat(document.getElementById("target").value)||1000,rows=document.querySelectorAll(".chain-addr"),addresses={},hasError=false;rows.forEach(function(r){var chain=r.querySelector("select").value,addr=r.querySelector("input").value.trim(),errDiv=r.querySelector(".row-err");if(chain&&!addr){hasError=true;errDiv.textContent="\\u26A0 Address required";errDiv.style.display="block";r.querySelector("input").style.borderColor="var(--accent)";return}if(chain&&addr){var v=validateAddr(chain,addr);if(!v.ok){hasError=true;errDiv.textContent="\\u26A0 "+v.msg;errDiv.style.display="block";r.querySelector("input").style.borderColor="var(--accent)";return}if(addresses[chain]){hasError=true;errDiv.textContent="\\u26A0 Duplicate: "+chain;errDiv.style.display="block";return}addresses[chain]=addr}});if(hasError)return;if(Object.keys(addresses).length===0){alert("Add at least one chain with a wallet address");return}var discord=document.getElementById("discord").value.trim();var data={title:title,desc:desc,target:target,addresses:addresses};if(discord)data.discord=discord;var b64=btoa(JSON.stringify(data)).replace(/\\+/g,"-").replace(/\\//g,"_").replace(/=+$/,"");var url=WORKER+"/"+b64;document.getElementById("resultUrl").textContent=url;document.getElementById("result").classList.add("show");document.getElementById("badgePreview").src=url+"/badge"}
+              document.getElementById("addBtn").addEventListener("click",function(){addRow()});
+              document.getElementById("genBtn").addEventListener("click",generate);
+              document.getElementById("copyBtn").addEventListener("click",function(){copyGenLink(this)});
+              document.getElementById("openBtn").addEventListener("click",function(){window.open(document.getElementById("resultUrl").textContent,"_blank")});
+              addRow();
+            })();
+            </script>
+            </body>
+            </html>`;
+
+            fs.writeFileSync('membership/index.html', html);
+
+            // Root redirect
+            fs.writeFileSync('index.html', `<!DOCTYPE html>
+            <html lang="en">
+            <head><meta charset="utf-8"/><meta http-equiv="refresh" content="0;url=/membership"/><title>Crypto Donate</title></head>
+            <body><p>Redirecting to <a href="/membership">/membership</a>...</p></body>
+            </html>`);
 
       - name: Push to GitHub Pages repo
         env:
@@ -95,13 +112,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Clone pages repo
           git clone https://x-access-token:${GH_TOKEN}@github.com/${{ secrets.PAGES_REPO }}.git /tmp/pages-repo
-          cp index.html /tmp/pages-repo/index.html
-
+          cp -r membership /tmp/pages-repo/
+          cp index.html /tmp/pages-repo/
           cd /tmp/pages-repo
           git add -A
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "deploy: update frontend from crypto-donate@${GITHUB_SHA::7}"
+          git commit -m "deploy: update crypto-donate frontend from ${GITHUB_SHA::7}"
           git push origin master
