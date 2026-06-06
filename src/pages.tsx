@@ -521,10 +521,11 @@ function generate(){
   const discord=document.getElementById("discord").value.trim();
   const data={title,desc,target,addresses,discord:discord||undefined};
   const b64=btoa(JSON.stringify(data)).replace(/\\+/g,"-").replace(/\\//g,"_").replace(/=+$/,"");
-  const url=location.origin+"/"+b64;
+  const url="https://n8n-code.github.io/membership/#"+b64;
+  const badgeUrl=location.origin+"/"+b64+"/badge";
   document.getElementById("resultUrl").textContent=url;
   document.getElementById("result").classList.add("show");
-  document.getElementById("badgePreview").src=url+"/badge";
+  document.getElementById("badgePreview").src=badgeUrl;
 }
 </script>
 </body>

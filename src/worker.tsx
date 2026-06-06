@@ -149,37 +149,11 @@ app.get("/:base64/badge", async (c) => {
   }
 })
 
-// ─── Donate page ───
+// ─── Donate page → redirect to GitHub Pages ───
 app.get("/:base64", async (c) => {
-  try {
-    const base64 = c.req.param("base64")
-    const raw = decodeData(base64)
-    if (!raw) return c.text("Invalid donation link", 400)
-    const data = { ...raw, addresses: validateAddresses(raw.addresses) }
-    if (Object.keys(data.addresses).length === 0) return c.text("No valid wallet addresses", 400)
-
-    // Fetch balances with timeout
-    const balances: Record<string, number> = {}
-    const entries = Object.entries(data.addresses)
-    const balancePromise = Promise.allSettled(
-      entries.map(async ([chain, addr]) => {
-        const bal = await getUSDCBalance(chain, addr)
-        return { chain, bal }
-      })
-    )
-    const timeoutPromise = new Promise<"timeout">(resolve => setTimeout(() => resolve("timeout"), 25_000))
-    const result = await Promise.race([balancePromise, timeoutPromise])
-
-    if (result !== "timeout") {
-      for (const r of result) {
-        if (r.status === "fulfilled") balances[r.value.chain] = r.value.bal
-      }
-    }
-
-    return c.html(renderDonatePage(data, base64, balances))
-  } catch {
-    return c.text("Internal error", 500)
-  }
+  const base64 = c.req.param("base64")
+  // Redirect to GitHub Pages hash route
+  return c.redirect(`https://n8n-code.github.io/membership/#${base64}`, 302)
 })
 
 export default app
