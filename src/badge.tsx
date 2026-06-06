@@ -16,7 +16,7 @@ function usdcIconSVG(x: number, y: number, size: number): string {
 export function renderBadge(data: DonateData, balances: Record<string, number>, theme: string = "light"): string {
   const total = Object.values(balances).reduce((s, v) => s + v, 0)
   const pct = data.target > 0 ? Math.min(100, (total / data.target) * 100) : 0
-  const title = data.title || "Donation"
+  const title = data.title || "Membership"
   const filled = pct / 100
 
   const bg = theme === "dark" ? "#231f20" : "#ffffff"

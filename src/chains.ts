@@ -242,6 +242,7 @@ export interface DonateData {
   currency?: string
   addresses: Record<string, string>
   logo?: string
+  discord?: string
 }
 
 export function encodeData(data: DonateData): string {

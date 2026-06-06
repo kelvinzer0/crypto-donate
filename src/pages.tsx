@@ -185,7 +185,7 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
 <title>${title} — Crypto Donate</title>
 <meta name="description" content="${desc}"/>
 <meta property="og:title" content="${title}"/>
-<meta property="og:description" content="Goal: ${data.target} USDC · ${formatNumber(total)} raised (${pct.toFixed(1)}%)"/>
+<meta property="og:description" content="Goal: ${data.target} USDC · ${formatNumber(total)} raised (${pct.toFixed(1)}%) · Join Discord for Contributor role"/>
 <meta property="og:image" content="/${base64}/badge"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -200,6 +200,7 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
   <div class="nav-links">
     <a href="/">Create</a>
     <a href="/${base64}/stats" target="_blank">API</a>
+    ${data.discord ? `<a href="${escHtml(data.discord)}" target="_blank" style="color:#5865F2"><i class="fab fa-discord"></i> Discord</a>` : ""}
   </div>
 </nav>
 
@@ -224,14 +225,14 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
 
   <div class="actions">
     <button class="btn btn-primary" onclick="copyLink(this)"><i class="fas fa-link"></i> Copy Link</button>
-    <button class="btn btn-outline" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('${escHtml(title)} — Crypto Donation')+'&url='+encodeURIComponent(location.href),'_blank')"><i class="fab fa-x-twitter"></i> Share on X</button>
+    <button class="btn btn-outline" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('${escHtml(title)} — Membership Moral')+'&url='+encodeURIComponent(location.href),'_blank')"><i class="fab fa-x-twitter"></i> Share on X</button>
     <a href="/${base64}/stats" target="_blank" class="btn btn-outline" style="text-decoration:none"><i class="fas fa-chart-bar"></i> Stats API</a>
   </div>
 
   <div class="content-grid">
     <div class="main-content">
       <div class="chain-section">
-        <h2>Donate · ${chainCount} chain${chainCount > 1 ? "s" : ""}</h2>
+        <h2>Membership · ${chainCount} chain${chainCount > 1 ? "s" : ""}</h2>
         <div class="chain-grid">
           ${entries.map(([chain, addr]) => {
             const cfg = CHAINS[chain]
@@ -261,6 +262,11 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
     </div>
 
     <div class="sidebar">
+      ${data.discord ? `<div class="sidebar-card" style="border-color:#5865F2;background:linear-gradient(135deg,rgba(88,101,242,0.05),rgba(88,101,242,0.02))">
+        <h3><i class="fab fa-discord" style="color:#5865F2"></i> Discord</h3>
+        <p style="font-size:14px;margin-bottom:12px">Join our Discord and <strong>claim your Contributor role</strong> to get recognized for your support.</p>
+        <a href="${escHtml(data.discord)}" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center;background:#5865F2;text-decoration:none"><i class="fab fa-discord"></i> Join Discord & Claim Role</a>
+      </div>` : ""}
       <div class="sidebar-card">
         <h3><i class="fas fa-info-circle"></i> Details</h3>
         <div class="stat-row"><span class="stat-label">Target</span><span class="stat-value">${formatNumber(data.target)} USDC</span></div>
@@ -279,7 +285,7 @@ export function renderDonatePage(data: DonateData, base64: string, balances: Rec
   </div>
 
   <div class="footer">
-    <p><a href="/">Crypto Donate</a> — Open source, no fees, no middleman. Donations go directly to wallet addresses.</p>
+    <p><a href="/">Crypto Donate</a> — Open source, no fees, no middleman. Membership goes directly to wallet addresses.</p>
   </div>
 </div>
 <script>
@@ -297,7 +303,7 @@ export function renderGeneratorPage(domain: string) {
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Crypto Donate — Create Donation Link</title>
+<title>Crypto Donate — Create Membership Moral Page</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -403,8 +409,8 @@ ${npmCSS}
 
 <div class="container">
   <div class="hero">
-    <h1>Create a Donation Link</h1>
-    <p>Multi-chain USDC donations. No fees, no middleman — straight to your wallet.</p>
+    <h1>Create a Membership Moral Page</h1>
+    <p>Multi-chain USDC membership. No fees, no middleman — direct moral support with on-chain transparency.</p>
   </div>
 
   <div class="form-card">
@@ -419,7 +425,12 @@ ${npmCSS}
     <div class="field">
       <label>Target Amount (USDC)</label>
       <input id="target" type="number" min="1" placeholder="1000" value="1000"/>
-      <div class="hint">The goal amount you're trying to raise</div>
+      <div class="hint">The goal amount for your membership</div>
+    </div>
+    <div class="field">
+      <label>Discord Invite Link</label>
+      <input id="discord" placeholder="https://discord.gg/your-invite"/>
+      <div class="hint">Members will be directed here to claim their Contributor role</div>
     </div>
     <div class="field">
       <label>Wallet Addresses</label>
@@ -444,7 +455,7 @@ ${npmCSS}
   <div class="features">
     <div class="feature"><div class="feature-icon"><i class="fas fa-link" style="color:var(--accent)"></i></div><h3>9 Chains</h3><p>Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Solana, Tron</p></div>
     <div class="feature"><div class="feature-icon"><i class="fas fa-chart-line" style="color:var(--accent)"></i></div><h3>Live Tracking</h3><p>Real-time on-chain USDC balance via public RPCs</p></div>
-    <div class="feature"><div class="feature-icon"><i class="fas fa-tag" style="color:var(--accent)"></i></div><h3>Embed Badge</h3><p>SVG progress badge for GitHub README</p></div>
+    <div class="feature"><div class="feature-icon"><i class="fab fa-discord" style="color:var(--accent)"></i></div><h3>Discord Roles</h3><p>Members claim Contributor role automatically</p></div>
   </div>
 
   <div class="footer">
@@ -502,7 +513,8 @@ function generate(){
   });
   if(hasError)return;
   if(Object.keys(addresses).length===0){alert("Add at least one chain with a wallet address");return;}
-  const data={title,desc,target,addresses};
+  const discord=document.getElementById("discord").value.trim();
+  const data={title,desc,target,addresses,discord:discord||undefined};
   const b64=btoa(JSON.stringify(data)).replace(/\\+/g,"-").replace(/\\//g,"_").replace(/=+$/,"");
   const url=location.origin+"/"+b64;
   document.getElementById("resultUrl").textContent=url;
