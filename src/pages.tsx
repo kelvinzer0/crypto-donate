@@ -157,9 +157,14 @@ a:hover{text-decoration:underline}
   .hero p{font-size:15px}
   .progress-card{padding:16px}
   .progress-raised{font-size:22px}
-  .addr{font-size:11px;padding:6px 8px}
+  .addr{font-size:11px;padding:6px 8px;min-width:0}
   .chain-card{padding:16px}
   .sidebar{margin-top:24px}
+  .addr-row{flex-wrap:wrap}
+  .btn-copy{padding:6px 12px;font-size:12px}
+  .btn-ext{padding:6px 8px}
+  .actions{flex-direction:column;align-items:stretch}
+  .actions .btn{width:100%;justify-content:center}
 }
 
 /* ─── Desktop sidebar layout ─── */
