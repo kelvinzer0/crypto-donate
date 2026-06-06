@@ -302,7 +302,7 @@ function getEVMClient(chainKey: string, cfg: ChainConfig) {
 
   if (!cfg.viemChain) return null
 
-  const transports = cfg.rpcs.map((rpc) => http(rpc, { timeout: 5000, retryCount: 0, fetch: noCacheFetch }))
+  const transports = cfg.rpcs.map((rpc) => http(rpc, { timeout: 5000, retryCount: 0, fetchFn: noCacheFetch }))
   const client = createPublicClient({
     chain: cfg.viemChain,
     transport: fallback(transports, { rank: false }),
