@@ -437,10 +437,10 @@ ${npmCSS}
       <div id="addresses"></div>
       <button class="add-chain-btn" onclick="addRow()">+ Add Another Chain</button>
     </div>
-    <button class="gen-btn" onclick="generate()">Generate Donation Link →</button>
+    <button class="gen-btn" onclick="generate()">Generate Membership Link →</button>
 
     <div id="result" class="result-card">
-      <label>Your donation link</label>
+      <label>Your membership link</label>
       <div class="result-url" id="resultUrl"></div>
       <div class="result-actions">
         <button class="btn btn-primary" onclick="copyGenLink(this)"><i class="fas fa-link"></i> Copy Link</button>

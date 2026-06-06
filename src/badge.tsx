@@ -49,8 +49,8 @@ ${usdcIconSVG(iconX, iconY, iconSize)}
 <text x="${textX}" y="22" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#cb3837">${valueText}</text>
 <rect x="16" y="34" width="${width - 32}" height="6" rx="3" fill="${barBg}"/>
 <rect x="16" y="34" width="${(width - 32) * filled}" height="6" rx="3" fill="url(#npmGrad)"/>
-<text x="16" y="54" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="11" fill="${mutedColor}">${pct.toFixed(1)}% funded · ${Object.keys(data.addresses).filter(k=>CHAINS[k]).length} chains</text>
-<text x="${width - 16}" y="54" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="11" fill="${mutedColor}" text-anchor="end">crypto-donate</text>
+<text x="16" y="54" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="11" fill="${mutedColor}">${pct.toFixed(1)}% achieved · ${Object.keys(data.addresses).filter(k=>CHAINS[k]).length} chains</text>
+<text x="${width - 16}" y="54" font-family="Source Sans Pro, -apple-system, sans-serif" font-size="11" fill="${mutedColor}" text-anchor="end">membership moral</text>
 </svg>`
 }
 
