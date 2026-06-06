@@ -271,6 +271,15 @@ const erc20Abi = [
   },
 ] as const
 
+// ─── Cache-busting fetch (prevents CDN/edge caching of RPC responses) ───
+// Date.now() is evaluated on EACH fetch call, not at wrapper creation
+const noCacheFetch: typeof fetch = (input, init) => {
+  const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url
+  const sep = url.includes("?") ? "&" : "?"
+  const busted = `${url}${sep}x-timestamp=${Date.now()}`
+  return fetch(busted, init)
+}
+
 // ─── EVM Client Cache ───
 const clientCache = new Map<string, ReturnType<typeof createPublicClient>>()
 
@@ -280,10 +289,10 @@ function getEVMClient(chainKey: string, cfg: ChainConfig) {
 
   if (!cfg.viemChain) return null
 
-  const transports = cfg.rpcs.map((rpc) => http(rpc, { timeout: 8000 }))
+  const transports = cfg.rpcs.map((rpc) => http(rpc, { timeout: 5000, retryCount: 0, fetch: noCacheFetch }))
   const client = createPublicClient({
     chain: cfg.viemChain,
-    transport: fallback(transports),
+    transport: fallback(transports, { rank: false }),
   })
 
   clientCache.set(chainKey, client)
@@ -343,13 +352,15 @@ async function getSolanaUSDCBalance(cfg: ChainConfig, address: string): Promise<
   return total
 }
 
-async function fetchWithRotation(rpcs: string[], init: RequestInit, timeoutMs = 8000): Promise<Response> {
+async function fetchWithRotation(rpcs: string[], init: RequestInit, timeoutMs = 5000): Promise<Response> {
   let lastErr: Error | null = null
   for (const rpc of rpcs) {
     try {
       const controller = new AbortController()
       const timer = setTimeout(() => controller.abort(), timeoutMs)
-      const resp = await fetch(rpc, { ...init, signal: controller.signal })
+      const sep = rpc.includes("?") ? "&" : "?"
+      const url = `${rpc}${sep}x-timestamp=${Date.now()}`
+      const resp = await fetch(url, { ...init, signal: controller.signal })
       clearTimeout(timer)
       if (resp.ok) return resp
     } catch (e) {
@@ -361,8 +372,8 @@ async function fetchWithRotation(rpcs: string[], init: RequestInit, timeoutMs = 
 
 async function getTronUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
   try {
-    const url = cfg.rpcs[0] + "/wallet/triggerconstantcontract"
-    const r = await fetch(url, {
+    const url = cfg.rpcs[0] + "/wallet/triggerconstantcontract?x-timestamp=" + Date.now()
+    const r = await noCacheFetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -383,8 +394,8 @@ async function getTronUSDCBalance(cfg: ChainConfig, address: string): Promise<nu
 
 async function getTonUSDCBalance(cfg: ChainConfig, address: string): Promise<number> {
   try {
-    const resp = await fetch(
-      `https://tonapi.io/v2/accounts/${address}/jettons?currencies=usd`,
+    const resp = await noCacheFetch(
+      `https://tonapi.io/v2/accounts/${address}/jettons?currencies=usd&x-timestamp=${Date.now()}`,
       { headers: { "Accept": "application/json" } }
     )
     const j: any = await resp.json()
